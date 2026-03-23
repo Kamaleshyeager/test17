@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MediTrack Pro</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="app">
+    <section id="authSection" class="auth-shell">
+      <div class="brand">
+        <h1>MediTrack Pro</h1>
+        <p>Track medicines, avoid losses from expired stock, and get proactive near-expiry alerts.</p>
+      </div>
+
+      <div class="login-grid">
+        <form class="card login-card" id="adminLoginForm" novalidate>
+          <h2>Admin Login</h2>
+          <p class="muted">Full inventory control and user-level oversight.</p>
+          <label for="adminUsername">Username</label>
+          <input id="adminUsername" name="username" type="text" autocomplete="username" required />
+          <label for="adminPassword">Password</label>
+          <input id="adminPassword" name="password" type="password" autocomplete="current-password" required minlength="6" />
+          <button type="submit" class="btn btn-primary">Login as Admin</button>
+        </form>
+
+        <form class="card login-card" id="pharmaLoginForm" novalidate>
+          <h2>Pharmacist Login</h2>
+          <p class="muted">Day-to-day stock entry and expiry monitoring.</p>
+          <label for="pharmaUsername">Username</label>
+          <input id="pharmaUsername" name="username" type="text" autocomplete="username" required />
+          <label for="pharmaPassword">Password</label>
+          <input id="pharmaPassword" name="password" type="password" autocomplete="current-password" required minlength="6" />
+          <button type="submit" class="btn btn-secondary">Login as Pharmacist</button>
+        </form>
+      </div>
+
+      <div class="hint card">
+        <h3>Demo Credentials</h3>
+        <ul>
+          <li><strong>Admin:</strong> admin / Admin@123</li>
+          <li><strong>Pharmacist:</strong> pharmacist / Pharma@123</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="dashboardSection" class="hidden">
+      <header class="topbar card">
+        <div>
+          <h2 id="welcomeTitle">Welcome</h2>
+          <p class="muted" id="welcomeSub"></p>
+        </div>
+        <div class="topbar-actions">
+          <label for="nearExpiryDays">Near-expiry threshold (days)</label>
+          <input id="nearExpiryDays" type="number" min="1" max="365" value="30" />
+          <button id="logoutBtn" class="btn btn-ghost">Logout</button>
+        </div>
+      </header>
+
+      <div class="stats-grid">
+        <article class="card stat">
+          <h3>Total Products</h3>
+          <p id="totalCount">0</p>
+        </article>
+        <article class="card stat danger">
+          <h3>Expired</h3>
+          <p id="expiredCount">0</p>
+        </article>
+        <article class="card stat warning">
+          <h3>Near Expiry</h3>
+          <p id="nearCount">0</p>
+        </article>
+        <article class="card stat success">
+          <h3>Safe Stock</h3>
+          <p id="safeCount">0</p>
+        </article>
+      </div>
+
+      <div class="layout-grid">
+        <form id="productForm" class="card" novalidate>
+          <h3 id="formHeading">Add Product</h3>
+          <input type="hidden" id="productId" />
+
+          <label for="productName">Product Name</label>
+          <input id="productName" type="text" required maxlength="120" placeholder="e.g., Amoxicillin 500mg" />
+
+          <label for="batchNo">Batch Number</label>
+          <input id="batchNo" type="text" required maxlength="32" placeholder="e.g., B-2026-001" />
+
+          <label for="category">Category</label>
+          <input id="category" type="text" required maxlength="60" placeholder="e.g., Antibiotic" />
+
+          <label for="quantity">Quantity</label>
+          <input id="quantity" type="number" required min="1" max="100000" />
+
+          <label for="mfgDate">Manufacturing Date</label>
+          <input id="mfgDate" type="date" required />
+
+          <label for="expDate">Expiry Date</label>
+          <input id="expDate" type="date" required />
+
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary" id="saveBtn">Save Product</button>
+            <button type="button" class="btn btn-ghost" id="resetBtn">Reset</button>
+          </div>
+          <p id="formError" class="error"></p>
+        </form>
+
+        <section class="card">
+          <div class="table-header">
+            <h3>Inventory</h3>
+            <div class="filters">
+              <input id="searchInput" type="search" placeholder="Search name, batch, category..." />
+              <select id="statusFilter">
+                <option value="all">All</option>
+                <option value="expired">Expired</option>
+                <option value="near">Near Expiry</option>
+                <option value="safe">Safe</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Batch</th>
+                  <th>Category</th>
+                  <th>Qty</th>
+                  <th>MFG</th>
+                  <th>EXP</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="inventoryBody"></tbody>
+            </table>
+          </div>
+          <p id="emptyState" class="muted hidden">No products match your filters.</p>
+        </section>
+      </div>
+    </section>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
